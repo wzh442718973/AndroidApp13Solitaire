@@ -1,6 +1,8 @@
 package com.romain.app13solitaire;
 
 import java.io.Serializable;
+import java.security.SecureRandom;
+import java.util.Random;
 import java.util.Vector;
 
 public class Game implements Serializable {
@@ -19,29 +21,56 @@ public class Game implements Serializable {
     public Vector<Card> pioche = new Vector<>();
     public Vector<Card> returnedPioche = new Vector<>();
 
+    private LEVEL level = LEVEL.SINGLE;
+    public void init(LEVEL level){
+        this.level = level;
+        this.decks = new Deck[DECK_COUNT];
+        this.stacks = new Stack[STACK_COUNT];
+        this.pioche.clear();
+        this.returnedPioche.clear();
 
-    // Constructeur qui permet d'initialiser l'état d'une nouvelle partie
-    // Création de l'état initial du jeu
-    public Game() {
-
-        // Step 1 - Toutes les cartes sont instanciées
-        for( int i = 1; i <= 13; i++ ) {
-            pioche.add( new Card( Card.CardType.CARREAU, i ) );
-            pioche.add( new Card( Card.CardType.COEUR, i ) );
-            pioche.add( new Card( Card.CardType.PIQUE, i ) );
-            pioche.add( new Card( Card.CardType.TREFLE, i ) );
+        Vector<Card> temp = new Vector<>(200);
+        if(level == LEVEL.SINGLE){
+            // Step 1 - Toutes les cartes sont instanciées
+            for (int i = 1; i <= 13; i++) {
+                //黑桃
+                temp.add(new Card(Card.CardType.PIQUE, i));
+                temp.add(new Card(Card.CardType.PIQUE, i));
+                temp.add(new Card(Card.CardType.PIQUE, i));
+                temp.add(new Card(Card.CardType.PIQUE, i));
+            }
+        }else if(level == LEVEL.DOUBLE){
+            // Step 1 - Toutes les cartes sont instanciées
+            for (int i = 1; i <= 13; i++) {
+                temp.add(new Card(Card.CardType.PIQUE, i));
+                temp.add(new Card(Card.CardType.COEUR, i));
+                temp.add(new Card(Card.CardType.PIQUE, i));
+                temp.add(new Card(Card.CardType.COEUR, i));
+            }
+        }else {
+            // Step 1 - Toutes les cartes sont instanciées
+            for (int i = 1; i <= 13; i++) {
+                temp.add(new Card(Card.CardType.CARREAU, i));
+                temp.add(new Card(Card.CardType.COEUR, i));
+                temp.add(new Card(Card.CardType.PIQUE, i));
+                temp.add(new Card(Card.CardType.TREFLE, i));
+            }
         }
 
         // Step 2 - On mélange les cartes
-        for( int round = 0; round < 200; round++ ) {
-            // A chaque tour on récupère une position aléatoire au niveau de la pioche
-            int position = (int) ( Math.random() * pioche.size() );
-            // On supprime la carte de la pioche
-            Card removedCard = pioche.elementAt( position );
-            pioche.removeElementAt( position );
-            // Et on réinsère la carte au dessus du paquet
-            pioche.add( removedCard );
+        Random random = new SecureRandom();
+        while (temp.size() > 0){
+            pioche.add(temp.remove(random.nextInt(temp.size())));
         }
+//        for( int round = 0; round < 200; round++ ) {
+//            // A chaque tour on récupère une position aléatoire au niveau de la pioche
+//            int position = (int) ( Math.random() * pioche.size() );
+//            // On supprime la carte de la pioche
+//            Card removedCard = pioche.elementAt( position );
+//            pioche.removeElementAt( position );
+//            // Et on réinsère la carte au dessus du paquet
+//            pioche.add( removedCard );
+//        }
 
         // Step 3 - On crée les sept decks avec des cartes tirées aléatoirement dans la pioche
         // Les 7 decks ont des tailles différentes
@@ -64,6 +93,12 @@ public class Game implements Serializable {
         for( int stackIndex = 0; stackIndex < STACK_COUNT; stackIndex++ ) {
             stacks[stackIndex] = new Stack();
         }
+    }
+
+    // Constructeur qui permet d'initialiser l'état d'une nouvelle partie
+    // Création de l'état initial du jeu
+    public Game() {
+
 
     }
 
@@ -114,7 +149,11 @@ public class Game implements Serializable {
         for( int deckIndex = 0; deckIndex < DECK_COUNT; deckIndex++ ) {
             Deck deck = this.decks[deckIndex];
             if ( deck.size() > 0 ) {
-                if ( deck.lastElement().getColor() == card.getColor() ) continue;
+                if(level == LEVEL.SINGLE){
+
+                }else {
+                    if (deck.lastElement().getColor() == card.getColor()) continue;
+                }
                 if ( deck.lastElement().getValue() == card.getValue()+1 ) return deckIndex;
             }
         }

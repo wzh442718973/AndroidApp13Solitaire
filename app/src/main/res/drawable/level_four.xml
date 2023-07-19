@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:width="150dp" android:height="30dp">
+        <color android:color="#00888888"/>
+    </item>
+    <item android:width="30dp" android:height="30dp" android:left="30dp">
+        <bitmap  android:src="@drawable/pique" />
+    </item>
+    <item android:width="30dp" android:height="30dp" android:left="60dp">
+        <bitmap android:src="@drawable/coeur" />
+    </item>
+    <item android:width="30dp" android:height="30dp" android:left="90dp">
+        <bitmap android:src="@drawable/treffle" />
+    </item>
+    <item android:width="30dp" android:height="30dp" android:left="120dp">
+        <bitmap android:src="@drawable/carreau" />
+    </item>
+</layer-list>

@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">App13Solitaire</string>
+    <string name="start_game">Game Start</string>
+    <string name="won_tip">You won!!!</string>
+    <string name="won_message">Start a new game</string>
+    <string name="new_tip">New Game</string>
+    <string name="new_message">Restart a new game</string>
 </resources>
